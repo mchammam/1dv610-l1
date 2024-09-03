@@ -9,6 +9,16 @@
 const template = document.createElement('template')
 template.innerHTML = `
 <style>
+  .visually-hidden {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+
   form {
     margin: auto;
     display: flex;
@@ -16,12 +26,21 @@ template.innerHTML = `
     gap: 1rem;
     margin: 1rem;
   }
+  input {
+    height: 55px;
+    box-shadow: inset 0 3px #00000014;
+    border: 1px solid #333;
+    border-radius: 4px;
+    color: #000;
+    font-size: 2.2rem;
+    text-align: center;
+    letter-spacing: 3px;
+  }
 </style>
 
 <form>
-  <label for="name">Enter your name:</label>
+  <label for="name" class="visually-hidden">Enter your name:</label>
   <input id="name" type="text" placeholder="Enter your name" />
-  <button type="submit">Submit</button>
 </form>
 `
 
