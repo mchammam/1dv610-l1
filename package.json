@@ -1,14 +1,21 @@
 {
   "name": "1dv610-l1",
-  "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "1DV610 - Laboration 1",
   "type": "module",
+  "browser": "src/js/index.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "serve": "vite preview",
+    "lint": "npx eslint ./src || exit 0",
+    "lint:fix": "npx eslint ./src --fix || exit 0"
   },
+  "Author": "Mohammed Chammam <mc223gr@student.lnu.se>",
+  "license": "MIT",
+  "private": true,
   "devDependencies": {
+    "@lnu/eslint-config": "^1.1.10",
     "vite": "^5.4.1"
   }
 }
