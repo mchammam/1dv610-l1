@@ -9,6 +9,9 @@
 const template = document.createElement('template')
 template.innerHTML = `
 <style>
+  .hidden {
+    display: none;
+  }
   .visually-hidden {
     clip: rect(0 0 0 0);
     clip-path: inset(50%);
@@ -18,7 +21,6 @@ template.innerHTML = `
     white-space: nowrap;
     width: 1px;
   }
-
   form {
     margin: auto;
     display: flex;
@@ -36,12 +38,22 @@ template.innerHTML = `
     text-align: center;
     letter-spacing: 3px;
   }
+  #namedays h2 {
+    text-align: center;
+  }
 </style>
 
 <form>
   <label for="name" class="visually-hidden">Enter your name:</label>
   <input id="name" type="text" placeholder="Enter your name" />
 </form>
+
+<div id="namedays" class="hidden">
+  <h2>Name days containing your name:</h2>
+  <ul>
+    <!-- List of namedays will be displayed here -->
+  </ul>
+</div>
 `
 
 customElements.define(
@@ -77,6 +89,7 @@ customElements.define(
       this.shadowRoot.querySelector('form').addEventListener('submit', (event) => {
         event.preventDefault()
         const name = this.shadowRoot.querySelector('form #name').value
+        // this.shadowRoot.querySelector('form #name').value = ''
 
         this.#submit(name)
       }, { signal: this.#abortController.signal })
@@ -95,7 +108,22 @@ customElements.define(
      * @param {string} name - The name of the user.
      */
     async #submit (name) {
-      console.log(name)
+      const res = await fetch(`https://nameday.abalin.net/api/V1/getname?name=${name}&country=se`)
+      if (!res.ok) {
+        console.error('Error fetching data')
+      }
+      const data = await res.json()
+
+      const ul = this.shadowRoot.querySelector('#namedays ul')
+      ul.innerHTML = ''
+
+      for (name of data['0']) {
+        const li = document.createElement('li')
+        li.textContent = `${name.day}/${name.month}: ${name.name}`
+        ul.appendChild(li)
+      }
+
+      this.shadowRoot.querySelector('#namedays').classList.remove('hidden')
     }
   }
 )
